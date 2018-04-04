@@ -11,7 +11,7 @@
 <table class="table table-bordered table-striped table-hover">
     <thead>
     <th>Customer</th>
-    <th>Discount Rate</th>
+    <th>Membership Type</th>
     </thead>
     <tbody>
     @if (!Model.Any())
@@ -30,7 +30,7 @@
                  <td>
                      @Html.ActionLink(customer.Name, "View", "Customers", new {id = customer.Id}, null)
                  </td>
-                 <td>@customer.MembershipType.DiscountRate %</td>
+                 <td>@customer.MembershipType.Name</td>
              </tr>
          }
     }
