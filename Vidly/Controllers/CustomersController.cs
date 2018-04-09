@@ -58,23 +58,26 @@ namespace Vidly.Controllers
             var membershipTypes = _context.MembershipTypes.ToList();
             var newCustomerViewModel = new CustomerFormViewModel()
             {
-                MembershipTypes = membershipTypes
+                MembershipTypes = membershipTypes,
+                Customer = new Customer()
             };
             return View("CustomerForm",newCustomerViewModel);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
-//            if (!ModelState.IsValid)
-//            {
-//                var membershipTypes = _context.MembershipTypes.ToList();
-//                var newCustomerViewModel = new NewCustomerViewModel()
-//                {
-//                    MembershipTypes = membershipTypes
-//                };
-//                return View("New", newCustomerViewModel);
-//            }
+            if (!ModelState.IsValid)
+            {
+                var membershipTypes = _context.MembershipTypes.ToList();
+                var newCustomerViewModel = new CustomerFormViewModel()
+                {
+                    MembershipTypes = membershipTypes,
+                    Customer = customer
+                };
+                return View("CustomerForm", newCustomerViewModel);
+            }
 
             if (customer.Id == 0)
                 _context.Customers.Add(customer);
@@ -95,9 +98,9 @@ namespace Vidly.Controllers
 
         }
 
-        public ActionResult Edit(int Id, Customer customer)
+        public ActionResult Edit(int id)
         {
-            var customerInDb =  _context.Customers.SingleOrDefault(c => c.Id == Id);
+            var customerInDb =  _context.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customerInDb == null)
                 return HttpNotFound();
